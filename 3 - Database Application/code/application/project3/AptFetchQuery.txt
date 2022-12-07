@@ -1,0 +1,34 @@
+
+--MODIFIED (for assign specs)
+WITH PregMatch (pregid, cid, mRole) AS
+    (
+        SELECT pregid, cid, 'P' AS mRole
+        FROM Pregnancy
+        WHERE primMid = 1
+        UNION
+        SELECT pregid, cid, 'B' AS mRole
+        FROM Pregnancy
+        WHERE secondMid = 1
+    )
+   , PregMatchMotherId (pregid, patid, mRole) AS
+    (
+        SELECT pregid, patid, mRole
+        FROM Couple C, PregMatch PM
+        WHERE C.cid = PM.cid
+    )
+   , MotherInfo (patid , name, hcardid, pregid, mRole) AS
+    (
+        SELECT P.patid, name, hcardid, PM.pregid, mRole
+        FROM Patient P, PregMatchMotherId PM
+        WHERE P.patid = PM.patid
+    )
+   , AptMatch (date, time, pregid, aptid) AS
+    (
+        SELECT date, time, pregid, aptid
+        FROM Appointment A
+        WHERE A.pregid IN (SELECT pregid FROM PregMatch)
+          AND YEAR(A.date) = 2022 AND MONTH(A.date) = 03 AND DAY(A.date) = 25
+    )
+SELECT date, time, mRole, name, hcardid, M.patid, A.aptid, A.pregid
+FROM MotherInfo M, AptMatch A
+WHERE M.pregid = A.pregid
