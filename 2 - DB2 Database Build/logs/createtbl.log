@@ -1,0 +1,78 @@
+(c) Copyright IBM Corporation 1993,2007
+Command Line Processor for DB2 Client 11.5.4.0
+
+You can issue database manager commands and SQL statements from the command 
+prompt. For example:
+    db2 => connect to sample
+    db2 => bind sample.bnd
+
+For general help, type: ?.
+For command help, type: ? command, where command can be
+the first few keywords of a database manager command. For example:
+ ? CATALOG DATABASE for help on the CATALOG DATABASE command
+ ? CATALOG          for help on all of the CATALOG commands.
+
+To exit db2 interactive mode, type QUIT at the command prompt. Outside 
+interactive mode, all commands must be prefixed with 'db2'.
+To list the current command option settings, type LIST COMMAND OPTIONS.
+
+For more detailed help, refer to the Online Reference Manual.
+
+db2 => db2 => db2 => db2 => db2 => CONNECT TO cs421
+
+   Database Connection Information
+
+ Database server        = DB2/LINUXX8664 11.5.4.0
+ SQL authorization ID   = ANGUYE56
+ Local database alias   = CS421
+
+
+db2 => db2 => db2 => db2 => db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE Patient ( patid     INTEGER       NOT NULL ,hcardid   CHAR(12) ,name      VARCHAR(50)   NOT NULL ,phone     BIGINT        NOT NULL     CHECK (regexp_like(phone, '\d{10}')) ,address   VARCHAR(100)  NOT NULL ,DOB       DATE ,bloodType VARCHAR(3)                 CHECK (regexp_like(bloodType, '((O|A|B|AB))((\+|\-))')) ,PRIMARY KEY(patid) )
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE BirthingParent ( patid      INTEGER       NOT NULL ,email      VARCHAR(50)   NOT NULL ,profession VARCHAR(50)   NOT NULL ,FOREIGN KEY(patid) REFERENCES Patient(patid) ,PRIMARY KEY(patid) )
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE NonBirthingParent ( parentid   INTEGER       NOT NULL ,hcardid    CHAR(12) ,name       VARCHAR(50)   NOT NULL ,phone      BIGINT        NOT NULL    CHECK (regexp_like(phone, '\d{10}')) ,address    VARCHAR(100) ,DOB        DATE          NOT NULL ,bloodType  VARCHAR(3)                CHECK (regexp_like(bloodType, '((O|A|B|AB))((\+|\-))')) ,email      VARCHAR(50) ,profession VARCHAR(50)   NOT NULL ,PRIMARY KEY(parentid) )
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE Couple ( cid                 INTEGER   NOT NULL ,programInterest    SMALLINT              DEFAULT 0 ,patid              INTEGER   NOT NULL ,parentid           INTEGER ,FOREIGN KEY (patid)    REFERENCES BirthingParent(patid) ,FOREIGN KEY (parentid) REFERENCES NonBirthingParent(parentid) ,PRIMARY KEY(cid) )
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE LabTech ( techid  INTEGER      NOT NULL ,name    VARCHAR(50) NOT NULL ,phone   BIGINT      NOT NULL  CHECK (regexp_like(phone, '\d{10}')) ,PRIMARY KEY(techid) )
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE  HealthCareInst ( instid  INTEGER       NOT NULL ,name   VARCHAR(50)   NOT NULL ,phone  BIGINT        NOT NULL   CHECK (regexp_like(phone, '\d{10}')) ,email  VARCHAR(50)   NOT NULL ,address VARCHAR(100) NOT NULL ,website VARCHAR(150) ,PRIMARY KEY(instid) )
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE BirthingClinic ( instid    INTEGER     NOT NULL ,FOREIGN KEY (instid) REFERENCES HealthCareInst(instid) ,PRIMARY KEY(instid) )
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE CommunityClinic ( instid    INTEGER     NOT NULL ,FOREIGN KEY (instid) REFERENCES HealthCareInst(instid) ,PRIMARY KEY(instid) )
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE Midwife ( mid      INTEGER      NOT NULL ,name    VARCHAR(50)  NOT NULL ,phone   BIGINT       NOT NULL    CHECK (regexp_like(phone, '\d{10}')) ,email   VARCHAR(50)  NOT NULL ,instid  INTEGER      NOT NULL ,FOREIGN KEY (instid) REFERENCES HealthCareInst(instid) ,PRIMARY KEY(mid) )
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => db2 => db2 => db2 => db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE Pregnancy ( pregid               INTEGER  NOT NULL ,ithPregnancy        INTEGER  NOT NULL ,numberBabies        INTEGER      DEFAULT 1 ,isHomeBirth         SMALLINT     DEFAULT 0 ,regRoughDueDate     DATE     NOT NULL ,uSoundDueDate       DATE ,lastMenstDueDate    DATE ,finalEstDueDate     DATE ,cid                 INTEGER  NOT NULL ,primMid             INTEGER ,secondMid           INTEGER ,instid              INTEGER ,FOREIGN Key (cid)        REFERENCES Couple(cid) ,FOREIGN Key (primMid)    REFERENCES Midwife(mid) ,FOREIGN Key (secondMid)  REFERENCES Midwife(mid) ,FOREIGN Key (instid)     REFERENCES BirthingClinic(instid) ,PRIMARY KEY(pregid) )
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE Child ( patid     INTEGER       NOT NULL ,gender    VARCHAR(12) ,pregid    INTEGER       NOT NULL ,FOREIGN KEY(patid)     REFERENCES Patient(patid) ,FOREIGN KEY(pregid)    REFERENCES Pregnancy(pregid) ,PRIMARY KEY(patid) )
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE InfoSession ( sessionid    INTEGER      NOT NULL ,date        DATE         NOT NULL ,time        TIME         NOT NULL ,language    VARCHAR(10)  NOT NULL ,mid         INTEGER      NOT NULL ,FOREIGN KEY(mid)       REFERENCES Midwife(mid) ,PRIMARY KEY(sessionid) )
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => db2 => db2 => db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE parentsInvited ( sessionid         INTEGER     NOT NULL ,cid              INTEGER     NOT NULL ,attendanceStatus SMALLINT ,FOREIGN KEY(sessionid) REFERENCES InfoSession(sessionid) ,FOREIGN KEY(cid)       REFERENCES Couple(cid) ,PRIMARY KEY(sessionid,cid) )
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE Appointment ( aptid    INTEGER    NOT NULL ,date    DATE       NOT NULL ,time    TIME       NOT NULL ,mid     INTEGER    NOT NULL ,pregid  INTEGER    NOT NULL ,FOREIGN KEY(mid)     REFERENCES Midwife(mid) ,FOREIGN KEY(pregid)  REFERENCES Pregnancy(pregid) ,PRIMARY KEY(aptid) )
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE AptNote ( noteid        INTEGER       NOT NULL ,noteDate     DATE          NOT NULL ,noteTime     TIME          NOT NULL ,observations VARCHAR(200)  NOT NULL ,aptid        INTEGER       NOT NULL ,FOREIGN KEY(aptid)         REFERENCES Appointment(aptid) ,PRIMARY KEY(noteid) )
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => db2 => db2 => db2 => db2 => db2 => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => db2 (cont.) => CREATE TABLE Test ( testid                  INTEGER       NOT NULL ,testType                VARCHAR(50)   NOT NULL ,sample                 VARCHAR(200) ,result                 VARCHAR(200) ,dateSampleTaken        DATE ,dateLabWorkCompleted   DATE ,pregid                 INTEGER       NOT NULL ,techid                 INTEGER ,patid                  INTEGER       NOT NULL ,mid                    INTEGER       NOT NULL ,FOREIGN KEY(pregid)    REFERENCES Pregnancy(pregid) ,FOREIGN KEY(techid)    REFERENCES LabTech(techid) ,FOREIGN KEY(patid)     REFERENCES Patient(patid) ,FOREIGN KEY(mid)       REFERENCES Midwife(mid) ,PRIMARY KEY(testid) )
+DB20000I  The SQL command completed successfully.
+
+db2 => db2 => db2 => 
